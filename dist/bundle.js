@@ -111,20 +111,20 @@ class AvenxApp {
 class Counter extends AvenxComponent {
     constructor(bridges) {
         super({"count":0,"step":1}, bridges);
-        this._template = `<div class="avenx-28ab74ec">
+        this._template = `<div class="avenx-e287f5e0">
     
 
-    <h1 @click="count = 0" class="avenx-663e4c76">
+    <h1 @click="count = 0" class="avenx-9337e1c1">
         
         Avenx-JS @css PoC
     </h1>
     
-    <div class="avenx-08801531">
+    <div class="avenx-fce01bb2">
         
         {{ count }}
     </div>
 
-    <button @click="count += step; log()" class="avenx-a36cbdbf">
+    <button @click="count += step; log()" class="avenx-ab40aff8">
         
         Erhöhen (+{{ step }})
     </button>
@@ -135,9 +135,16 @@ class Counter extends AvenxComponent {
 class Display extends AvenxComponent {
     constructor(bridges) {
         super({}, bridges);
-        this._template = `<div>
-    <h3>Display Component</h3>
-    <p>Bridge Count: {{ CounterBridge.count }}</p>
+        this._template = `<div class="avenx-74e33e8e">
+    
+    <div class="avenx-63f81c08">
+        
+        Globaler Brücken-Zähler
+    </div>
+    <div class="avenx-1053fd5c">
+        
+        {{ CounterBridge.count }}
+    </div>
 </div>`;
         this.methods = {  };
     }
@@ -145,9 +152,16 @@ class Display extends AvenxComponent {
 class Source extends AvenxComponent {
     constructor(bridges) {
         super({}, bridges);
-        this._template = `<div>
-    <h3>Source Component</h3>
-    <button @click="CounterBridge.count++">Increment Bridge</button>
+        this._template = `<div class="avenx-5ea87827">
+    
+    <div class="avenx-11ab6060">
+        
+        Brücken-Steuerung
+    </div>
+    <button @click="CounterBridge.count++" class="avenx-1f9e7009">
+        
+        Zähler erhöhen
+    </button>
 </div>`;
         this.methods = {  };
     }

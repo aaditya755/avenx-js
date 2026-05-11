@@ -1,46 +1,59 @@
 <@global>
-    @def primary #ff3e00;
-    @def dark #333;
-    @def white #fff;
+    @def primary #6366f1;
+    @def secondary #f43f5e;
+    @def dark #1e1b4b;
+    @def light #f8fafc;
+    @def white #ffffff;
+    @def shadow rgba(30, 27, 75, 0.2);
 </ @global>
 
 <@css>
     container {
-        border: 4px solid @dark;
-        padding: 40px;
-        border-radius: 20px;
         background: @white;
+        border: 2px solid @dark;
+        padding: 3rem;
+        border-radius: 2rem;
         text-align: center;
-        box-shadow: 12px 12px 0px @dark;
-        font-family: 'Segoe UI', sans-serif;
-        max-width: 400px;
+        box-shadow: 1rem 1rem 0 @dark;
+        font-family: 'Inter', 'Segoe UI', sans-serif;
+        max-width: 450px;
+        transition: 0.3s;
     }
 
     title {
+        font-size: 1.5rem;
+        font-weight: 800;
         color: @dark;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 2rem;
+        display: inline-block;
+        border-bottom: 4px solid @secondary;
         cursor: pointer;
-        transition: 0.2s;
-        &:hover { color: @primary; transform: rotate(-2deg); }
+        &:hover { color: @secondary; }
     }
 
     value {
-        font-size: 6rem;
+        font-size: 8rem;
         font-weight: 900;
         color: @primary;
-        margin: 20px 0;
+        margin: 1rem 0;
+        line-height: 1;
+        text-shadow: 4px 4px 0px rgba(99, 102, 241, 0.1);
     }
 
     button {
         background: @primary;
         color: @white;
-        border: 3px solid @dark;
-        padding: 15px 30px;
-        border-radius: 12px;
+        border: 2px solid @dark;
+        padding: 1rem 2rem;
+        border-radius: 1rem;
         cursor: pointer;
-        font-size: 1.2rem;
-        font-weight: bold;
-        transition: 0.1s;
-        &:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 @dark; }
-        &:active { transform: translate(0, 0); box-shadow: 0 0 0 @dark; }
+        font-size: 1.1rem;
+        font-weight: 700;
+        transition: 0.15s;
+        box-shadow: 0.4rem 0.4rem 0 @dark;
+        &:hover { transform: translate(-0.1rem, -0.1rem); box-shadow: 0.5rem 0.5rem 0 @dark; }
+        &:active { transform: translate(0.4rem, 0.4rem); box-shadow: 0 0 0 @dark; }
     }
 </ @css>

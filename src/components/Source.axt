@@ -1,4 +1,11 @@
 <div>
-    <h3>Source Component</h3>
-    <button @click="CounterBridge.count++">Increment Bridge</button>
+    <@css panel />
+    <div>
+        <@css title />
+        Brücken-Steuerung
+    </div>
+    <button @click="CounterBridge.count++">
+        <@css button />
+        Zähler erhöhen
+    </button>
 </div>
