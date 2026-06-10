@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "*.component.js": "html",
-        "*.component.css": "html",
-        "*.app.js": "javascript"
-    },
-    "javascript.validate.enable": true,
-    "html.format.templating": true
-}
