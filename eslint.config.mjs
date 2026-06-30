@@ -8,6 +8,7 @@ export default [
     ignores: [
       "node_modules/",
       "dist/",
+      "docs/dist/",
       "coverage/",
       "bench-results/"
     ]
@@ -17,15 +18,43 @@ export default [
       ecmaVersion: "latest",
       sourceType: "module",
       globals: {
+        // Browser globals
         window: "readonly",
         document: "readonly",
+        customElements: "readonly",
+        HTMLElement: "readonly",
+        Element: "readonly",
+        Node: "readonly",
+        Event: "readonly",
+        CustomEvent: "readonly",
+        URL: "readonly",
+        URLSearchParams: "readonly",
+        ResizeObserver: "readonly",
+        MutationObserver: "readonly",
+        IntersectionObserver: "readonly",
+        navigator: "readonly",
+        location: "readonly",
+        fetch: "readonly",
+        Headers: "readonly",
+        getSelection: "readonly",
+        getComputedStyle: "readonly",
+        requestAnimationFrame: "readonly",
+        cancelAnimationFrame: "readonly",
+        DOMParser: "readonly",
+
+        // Node / Common JS / ES Module / Test globals
         process: "readonly",
         __dirname: "readonly",
+        __filename: "readonly",
         module: "readonly",
         require: "readonly",
         console: "readonly",
         setTimeout: "readonly",
-        clearTimeout: "readonly"
+        clearTimeout: "readonly",
+        setInterval: "readonly",
+        clearInterval: "readonly",
+        global: "writable",
+        globalThis: "writable"
       }
     },
     plugins: {
@@ -38,7 +67,7 @@ export default [
       "no-var": "error",
       "prefer-const": "error",
       "prefer-arrow-callback": "error",
-      "camelcase": ["error", { "properties": "always" }],
+      "camelcase": ["error", { "properties": "always", "allow": ["__avenx_comp_instance", "__avenx_routers"] }],
       "jsdoc/require-jsdoc": ["error", {
         "require": {
           "MethodDefinition": true,
