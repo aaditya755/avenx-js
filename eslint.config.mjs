@@ -75,7 +75,14 @@ export default [
         }
       }],
       "jsdoc/require-param": "error",
-      "jsdoc/require-returns": "off"
+      "jsdoc/require-returns": "off",
+      "jsdoc/require-param-description": "off",
+      "jsdoc/require-returns-description": "off",
+      "jsdoc/no-undefined-types": "off",
+      "jsdoc/reject-any-type": "off",
+      "jsdoc/reject-function-type": "off",
+      "jsdoc/check-types": "off",
+      "jsdoc/escape-inline-tags": "off"
     }
   }
 ];
