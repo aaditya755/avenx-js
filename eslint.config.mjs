@@ -8,7 +8,7 @@ export default [
     ignores: [
       "node_modules/",
       "dist/",
-      "docs/dist/",
+      "docs/",
       "coverage/",
       "bench-results/"
     ]
@@ -54,7 +54,8 @@ export default [
         setInterval: "readonly",
         clearInterval: "readonly",
         global: "writable",
-        globalThis: "writable"
+        globalThis: "writable",
+        Buffer: "readonly"
       }
     },
     plugins: {
@@ -86,7 +87,7 @@ export default [
     }
   },
   {
-    files: ["test/**/*.js", "bin/**/*.js"],
+    files: ["test/**/*.js", "bin/**/*.js", "scripts/**/*.js"],
     rules: {
       "jsdoc/require-jsdoc": "off",
       "jsdoc/require-param": "off",

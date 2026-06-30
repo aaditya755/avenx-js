@@ -8,6 +8,7 @@ bench-results/
 dev-docs/
 coverage/
 issues.md
+docs
 
 # node & npm
 node_modules/
@@ -15,3 +16,5 @@ node_modules/
 
 # editors
 .vscode/
+
+.gitignore

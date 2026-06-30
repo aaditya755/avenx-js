@@ -28,7 +28,7 @@ function minifyCss(css) {
   return css
     .replace(/\/\*[\s\S]*?\*\//g, '') // remove comments
     .replace(/\s+/g, ' ')             // collapse whitespace
-    .replace(/\s*([\{\}:;])\s*/g, '$1') // remove whitespace around punctuation
+    .replace(/\s*([{}:;])\s*/g, '$1') // remove whitespace around punctuation
     .trim();
 }
 
@@ -108,6 +108,7 @@ async function run() {
       const cssRaw = fs.readFileSync(cssPath, 'utf8');
 
       console.log('Minifying assets...');
+      /* eslint-disable camelcase */
       const jsMinifiedResult = await minify(jsRaw, {
         compress: {
           dead_code: true,
@@ -121,6 +122,7 @@ async function run() {
         },
         mangle: true,
       });
+      /* eslint-enable camelcase */
 
       const jsMinified = jsMinifiedResult.code || '';
       const cssMinified = minifyCss(cssRaw);
