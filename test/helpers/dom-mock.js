@@ -2,10 +2,11 @@ const assert = require('assert');
 
 // 1. Die Mock-Klasse zur Verhaltensprüfung (Behavior Verification)
 class MockDOMElement {
-    constructor(tagName) {
+    constructor(tagName, namespaceURI = 'http://www.w3.org/1999/xhtml') {
         this.tagName = tagName.toUpperCase();
         this.nodeName = tagName.toUpperCase();
         this.nodeType = 1; // Element Node
+        this.namespaceURI = namespaceURI;
         this.childNodes = [];
         this._attrs = {};
         this.attributes = [];
@@ -60,7 +61,7 @@ class MockDOMElement {
     }
 
     cloneNode(deep) {
-        const copy = new MockDOMElement(this.tagName);
+        const copy = new MockDOMElement(this.tagName, this.namespaceURI);
         copy.value = this.value;
         copy._attrs = { ...this._attrs };
         copy.attributes = [...this.attributes];
@@ -108,7 +109,8 @@ function setupDOMMock() {
     global.Node = { ELEMENT_NODE: 1, TEXT_NODE: 3 };
     global.document = {
         querySelector: () => new MockDOMElement('div'),
-        createElement: (tag) => new MockDOMElement(tag)
+        createElement: (tag) => new MockDOMElement(tag),
+        createElementNS: (ns, tag) => new MockDOMElement(tag, ns)
     };
 
     global.DOMParser = class {
