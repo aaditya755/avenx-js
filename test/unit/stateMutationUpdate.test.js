@@ -77,6 +77,9 @@ global.document = {
 };
 
 global.DOMParser = class {
+  /**
+   *
+   */
   parseFromString() {
     return { body: createMockElement('body') };
   }
@@ -84,6 +87,9 @@ global.DOMParser = class {
 
 global.Node = { ELEMENT_NODE: 1, TEXT_NODE: 3 };
 
+/**
+ *
+ */
 async function testStateMutationInTemplate() {
   console.log('🧪 Testing state mutation inside template (computed/getter)...');
 
@@ -115,6 +121,9 @@ async function testStateMutationInTemplate() {
   console.log('  ✅ State mutation in template test passed!');
 }
 
+/**
+ *
+ */
 async function testStateMutationInOnUpdate() {
   console.log('🧪 Testing state mutation inside onUpdate hook...');
 
@@ -147,6 +156,9 @@ async function testStateMutationInOnUpdate() {
   console.log('  ✅ State mutation in onUpdate test passed!');
 }
 
+/**
+ *
+ */
 async function testSafeStateMutation() {
   console.log('🧪 Testing safe state mutation outside render/update...');
 

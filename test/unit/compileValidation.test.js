@@ -2,6 +2,9 @@ const assert = require('assert');
 const StyleProcessor = require('../../lib/compiler/StyleProcessor');
 const ComponentParser = require('../../lib/compiler/ComponentParser');
 
+/**
+ *
+ */
 function runTests() {
   console.log('🧪 Testing Compile-time Static Validation...');
 
@@ -9,6 +12,10 @@ function runTests() {
   const cp = new ComponentParser(sp);
 
   // Helper to capture console.warn messages during static validation
+  /**
+   *
+   * @param fn
+   */
   function captureWarnings(fn) {
     const warnings = [];
     const originalWarn = console.warn;

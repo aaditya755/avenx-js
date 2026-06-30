@@ -6,7 +6,15 @@ const { AvenxComponent } = require('../../lib/core/runtime/AvenxComponent');
 // 1. Lightweight Mock DOM & HTML Parser
 // ==========================================
 
+/**
+ *
+ */
 class MockNode {
+  /**
+   *
+   * @param nodeType
+   * @param nodeName
+   */
   constructor(nodeType, nodeName) {
     this.nodeType = nodeType;
     this.nodeName = nodeName;
@@ -14,6 +22,10 @@ class MockNode {
     this.parentNode = null;
   }
 
+  /**
+   *
+   * @param child
+   */
   appendChild(child) {
     if (child.parentNode) {
       child.parentNode.removeChild(child);
@@ -23,6 +35,10 @@ class MockNode {
     return child;
   }
 
+  /**
+   *
+   * @param child
+   */
   removeChild(child) {
     const idx = this.childNodes.indexOf(child);
     if (idx !== -1) {
@@ -32,6 +48,11 @@ class MockNode {
     return child;
   }
 
+  /**
+   *
+   * @param newChild
+   * @param oldChild
+   */
   replaceChild(newChild, oldChild) {
     const idx = this.childNodes.indexOf(oldChild);
     if (idx !== -1) {
@@ -45,6 +66,10 @@ class MockNode {
     return oldChild;
   }
 
+  /**
+   *
+   * @param child
+   */
   contains(child) {
     let curr = child;
     while (curr) {
@@ -55,48 +80,93 @@ class MockNode {
   }
 }
 
+/**
+ *
+ */
 class MockTextNode extends MockNode {
+  /**
+   *
+   * @param text
+   */
   constructor(text) {
     super(3, '#text');
     this.textContent = text;
   }
 
+  /**
+   *
+   * @param deep
+   */
   cloneNode(deep) {
     return new MockTextNode(this.textContent);
   }
 }
 
+/**
+ *
+ */
 class MockElementNode extends MockNode {
+  /**
+   *
+   * @param tagName
+   * @param attrs
+   */
   constructor(tagName, attrs = {}) {
     super(1, tagName.toUpperCase());
     this.tagName = tagName.toUpperCase();
     this.attrs = { ...attrs };
   }
 
+  /**
+   *
+   */
   get attributes() {
     return Object.entries(this.attrs).map(([name, value]) => ({ name, value }));
   }
 
+  /**
+   *
+   * @param name
+   */
   hasAttribute(name) {
     return name in this.attrs;
   }
 
+  /**
+   *
+   * @param name
+   */
   getAttribute(name) {
     return name in this.attrs ? this.attrs[name] : null;
   }
 
+  /**
+   *
+   * @param name
+   * @param value
+   */
   setAttribute(name, value) {
     this.attrs[name] = String(value);
   }
 
+  /**
+   *
+   * @param name
+   */
   removeAttribute(name) {
     delete this.attrs[name];
   }
 
+  /**
+   *
+   */
   get textContent() {
     return this.childNodes.map((c) => c.textContent).join('');
   }
 
+  /**
+   *
+   */
   set textContent(val) {
     this.childNodes.forEach((c) => {
       c.parentNode = null;
@@ -105,6 +175,10 @@ class MockElementNode extends MockNode {
     this.appendChild(new MockTextNode(val));
   }
 
+  /**
+   *
+   * @param deep
+   */
   cloneNode(deep) {
     const copy = new MockElementNode(this.tagName, this.attrs);
     if (deep) {
@@ -115,6 +189,10 @@ class MockElementNode extends MockNode {
     return copy;
   }
 
+  /**
+   *
+   * @param selector
+   */
   querySelectorAll(selector) {
     const results = [];
     const matchSelector = (el) => {
@@ -144,22 +222,40 @@ class MockElementNode extends MockNode {
     return results;
   }
 
+  /**
+   *
+   * @param selector
+   */
   querySelector(selector) {
     const res = this.querySelectorAll(selector);
     return res.length > 0 ? res[0] : null;
   }
 }
 
+/**
+ *
+ * @param text
+ */
 function createMockTextNode(text) {
   return new MockTextNode(text);
 }
 
+/**
+ *
+ * @param tagName
+ * @param attrs
+ * @param children
+ */
 function createMockElementNode(tagName, attrs = {}, children = []) {
   const el = new MockElementNode(tagName, attrs);
   children.forEach((c) => el.appendChild(c));
   return el;
 }
 
+/**
+ *
+ * @param htmlStr
+ */
 function parseHTML(htmlStr) {
   htmlStr = htmlStr.trim();
   if (!htmlStr) return [];
@@ -223,6 +319,11 @@ function parseHTML(htmlStr) {
   return nodes;
 }
 
+/**
+ *
+ * @param str
+ * @param tagName
+ */
 function findClosingTagIndex(str, tagName) {
   const startTagPattern = new RegExp(`<${tagName.toLowerCase()}[\\s>]`, 'i');
   const endTagPattern = new RegExp(`</${tagName.toLowerCase()}>`, 'i');
@@ -265,6 +366,11 @@ global.document = {
 };
 
 global.DOMParser = class {
+  /**
+   *
+   * @param html
+   * @param type
+   */
   parseFromString(html, type) {
     const body = createMockElementNode('body');
     const parsed = parseHTML(html);
@@ -292,7 +398,14 @@ global.Node = {
     let lastChildInstance = null;
 
     // Custom child component class
+    /**
+     *
+     */
     class ChildComponent extends AvenxComponent {
+      /**
+       *
+       * @param bridges
+       */
       constructor(bridges) {
         super(
           { childVal: 'initialChild' }, // initialState
@@ -312,6 +425,10 @@ global.Node = {
           },
         );
       }
+      /**
+       *
+       * @param target
+       */
       mount(target) {
         super.mount(target);
         lastChildInstance = this;
@@ -319,7 +436,15 @@ global.Node = {
     }
 
     // Parent Page class
+    /**
+     *
+     */
     class ParentPage extends AvenxPage {
+      /**
+       *
+       * @param bridges
+       * @param componentRegistry
+       */
       constructor(bridges, componentRegistry) {
         super(
           {

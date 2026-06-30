@@ -1,7 +1,15 @@
 const assert = require('assert');
 
 // 1. Die Mock-Klasse zur Verhaltensprüfung (Behavior Verification)
+/**
+ *
+ */
 class MockDOMElement {
+  /**
+   *
+   * @param tagName
+   * @param namespaceURI
+   */
   constructor(tagName, namespaceURI = 'http://www.w3.org/1999/xhtml') {
     this.tagName = tagName.toUpperCase();
     this.nodeName = tagName.toUpperCase();
@@ -17,30 +25,55 @@ class MockDOMElement {
     this.recordedCalls = [];
   }
 
+  /**
+   *
+   * @param name
+   * @param value
+   */
   setAttribute(name, value) {
     this._attrs[name] = String(value);
     this.attributes = Object.entries(this._attrs).map(([k, v]) => ({ name: k, value: v }));
   }
 
+  /**
+   *
+   * @param name
+   */
   getAttribute(name) {
     return this._attrs[name] !== undefined ? this._attrs[name] : null;
   }
 
+  /**
+   *
+   * @param name
+   */
   hasAttribute(name) {
     return this._attrs[name] !== undefined;
   }
 
+  /**
+   *
+   * @param name
+   */
   removeAttribute(name) {
     delete this._attrs[name];
     this.attributes = Object.entries(this._attrs).map(([k, v]) => ({ name: k, value: v }));
   }
 
+  /**
+   *
+   * @param child
+   */
   appendChild(child) {
     child.parentNode = this;
     this.childNodes.push(child);
     return child;
   }
 
+  /**
+   *
+   * @param child
+   */
   removeChild(child) {
     const idx = this.childNodes.indexOf(child);
     if (idx !== -1) {
@@ -50,6 +83,11 @@ class MockDOMElement {
     }
   }
 
+  /**
+   *
+   * @param newChild
+   * @param oldChild
+   */
   replaceChild(newChild, oldChild) {
     const idx = this.childNodes.indexOf(oldChild);
     if (idx !== -1) {
@@ -60,6 +98,10 @@ class MockDOMElement {
     }
   }
 
+  /**
+   *
+   * @param deep
+   */
   cloneNode(deep) {
     const copy = new MockDOMElement(this.tagName, this.namespaceURI);
     copy.value = this.value;
@@ -77,27 +119,49 @@ class MockDOMElement {
     return copy;
   }
 
+  /**
+   *
+   * @param selector
+   */
   querySelectorAll(selector) {
     // Gibt eine leere Liste zurück, da dieses Element keine verschachtelten slot-Elemente hat
     return [];
   }
 
+  /**
+   *
+   * @param event
+   * @param callback
+   */
   addEventListener(event, callback) {
     // Protokolliert den Aufruf für spätere Assertions
     this.recordedCalls.push({ method: 'addEventListener', event, callback });
   }
 
+  /**
+   *
+   * @param event
+   * @param callback
+   */
   removeEventListener(event, callback) {
     // Protokolliert den Aufruf für spätere Assertions
     this.recordedCalls.push({ method: 'removeEventListener', event, callback });
   }
 
   // Verifikations-Methoden zur Verhaltensprüfung (Behavior Verification)
+  /**
+   *
+   * @param event
+   */
   assertListenerWasAdded(event) {
     const found = this.recordedCalls.some((call) => call.method === 'addEventListener' && call.event === event);
     assert.ok(found, `Erwartung fehlgeschlagen: addEventListener wurde nicht für "${event}" aufgerufen.`);
   }
 
+  /**
+   *
+   * @param event
+   */
   assertListenerWasRemoved(event) {
     const found = this.recordedCalls.some((call) => call.method === 'removeEventListener' && call.event === event);
     assert.ok(found, `Erwartung fehlgeschlagen: removeEventListener wurde nicht für "${event}" aufgerufen.`);
@@ -105,6 +169,9 @@ class MockDOMElement {
 }
 
 // 2. Hilfsfunktionen zum Registrieren und Zurücksetzen der globalen Variablen
+/**
+ *
+ */
 function setupDOMMock() {
   global.Node = { ELEMENT_NODE: 1, TEXT_NODE: 3 };
   global.document = {
@@ -114,6 +181,10 @@ function setupDOMMock() {
   };
 
   global.DOMParser = class {
+    /**
+     *
+     * @param htmlString
+     */
     parseFromString(htmlString) {
       const body = new MockDOMElement('body');
 
@@ -153,6 +224,9 @@ function setupDOMMock() {
   };
 }
 
+/**
+ *
+ */
 function teardownDOMMock() {
   delete global.Node;
   delete global.document;

@@ -27,6 +27,9 @@ const { AvenxPage } = require('../../lib/core/runtime/AvenxPage');
     };
 
     global.DOMParser = class {
+      /**
+       *
+       */
       parseFromString() {
         return { body: mockElement };
       }
@@ -58,7 +61,15 @@ const { AvenxPage } = require('../../lib/core/runtime/AvenxPage');
     let updateCount = 0;
     let lastMountedInstance = null;
 
+    /**
+     *
+     */
     class OptimizedPage extends AvenxPage {
+      /**
+       *
+       * @param bridges
+       * @param componentRegistry
+       */
       constructor(bridges, componentRegistry) {
         super(
           {}, // initialState
@@ -79,16 +90,32 @@ const { AvenxPage } = require('../../lib/core/runtime/AvenxPage');
           componentRegistry,
         );
       }
+      /**
+       *
+       * @param target
+       */
       mount(target) {
         super.mount(target);
         lastMountedInstance = this;
       }
     }
 
+    /**
+     *
+     */
     class OtherPage extends AvenxPage {
+      /**
+       *
+       * @param bridges
+       * @param componentRegistry
+       */
       constructor(bridges, componentRegistry) {
         super({}, {}, bridges, '<div>Other Page</div>', {}, componentRegistry);
       }
+      /**
+       *
+       * @param target
+       */
       mount(target) {
         super.mount(target);
         lastMountedInstance = this;

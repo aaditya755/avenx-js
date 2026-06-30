@@ -23,6 +23,9 @@ try {
 
   // Mock DOMParser for DomPatcher
   global.DOMParser = class {
+    /**
+     *
+     */
     parseFromString() {
       return { body: mockElement };
     }

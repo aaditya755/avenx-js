@@ -7,6 +7,10 @@ const { fork } = require('child_process');
 const filter = process.argv[2] || '';
 const baseDir = path.join(__dirname, filter);
 
+/**
+ *
+ * @param dir
+ */
 function findTestFiles(dir) {
   let results = [];
   const list = fs.readdirSync(dir);
@@ -25,6 +29,10 @@ function findTestFiles(dir) {
   return results;
 }
 
+/**
+ *
+ * @param file
+ */
 async function runTestFile(file) {
   const relativePath = path.relative(path.join(__dirname, '..'), file);
   console.log(`\n🏃 Running: ${relativePath}`);

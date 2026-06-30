@@ -2,6 +2,9 @@ const assert = require('assert');
 const { DomPatcher } = require('../../lib/core/renderer/domPatch');
 const { MockDOMElement, setupDOMMock, teardownDOMMock } = require('../helpers/dom-mock');
 
+/**
+ *
+ */
 async function testSvgNamespaceRendering() {
   console.log('🧪 Testing SVG namespace rendering in DomPatcher...');
 
@@ -11,6 +14,10 @@ async function testSvgNamespaceRendering() {
     // We override DOMParser specifically for this test to simulate SVG nodes
     // parsed with the HTML namespace (as happens when DOMParser parses as text/html).
     global.DOMParser = class {
+      /**
+       *
+       * @param htmlString
+       */
       parseFromString(htmlString) {
         // Return a tree structure: body -> svg -> circle
         const body = new MockDOMElement('body');

@@ -15,6 +15,9 @@ const { ProxyHandlerFactory, isReactiveTarget } = require('../../lib/core/reacti
 const { StateFactory } = require('../../lib/core/reactive/createState');
 const { AvenxApp } = require('../../lib/core/runtime/AvenxApp');
 
+/**
+ *
+ */
 function testIsReactiveTarget() {
   console.log('🧪 Testing isReactiveTarget helper...');
 
@@ -38,12 +41,18 @@ function testIsReactiveTarget() {
   assert.strictEqual(isReactiveTarget(new Set()), false);
   assert.strictEqual(isReactiveTarget(Promise.resolve()), false);
 
+  /**
+   *
+   */
   class CustomClass {}
   assert.strictEqual(isReactiveTarget(new CustomClass()), false);
 
   console.log('  ✅ isReactiveTarget helper tests passed!');
 }
 
+/**
+ *
+ */
 function testStateDeepReactivity() {
   console.log('🧪 Testing deep reactivity on component state...');
 
@@ -90,6 +99,9 @@ function testStateDeepReactivity() {
   console.log('  ✅ Component state deep reactivity tests passed!');
 }
 
+/**
+ *
+ */
 function testReferentialIdentity() {
   console.log('🧪 Testing preservation of referential identity...');
 
@@ -106,6 +118,9 @@ function testReferentialIdentity() {
   console.log('  ✅ Referential identity tests passed!');
 }
 
+/**
+ *
+ */
 function testProxyUnwrapping() {
   console.log('🧪 Testing proxy unwrapping on assignment...');
 
@@ -129,6 +144,9 @@ function testProxyUnwrapping() {
   console.log('  ✅ Proxy unwrapping tests passed!');
 }
 
+/**
+ *
+ */
 async function testBridgeDeepReactivity() {
   console.log('🧪 Testing deep reactivity on global bridges...');
 
@@ -169,6 +187,9 @@ async function testBridgeDeepReactivity() {
   console.log('  ✅ Global bridge deep reactivity tests passed!');
 }
 
+/**
+ *
+ */
 function testBuiltinsAreNotProxied() {
   console.log('🧪 Testing that built-ins are not proxied...');
 

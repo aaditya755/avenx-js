@@ -4,28 +4,55 @@ const { AvenxPage } = require('../../lib/core/runtime/AvenxPage');
 const { setupDOMMock, teardownDOMMock } = require('../helpers/dom-mock');
 
 // Define mock Page classes
+/**
+ *
+ */
 class PageHome extends AvenxPage {
+  /**
+   *
+   */
   render() {
     return '<div>Home Page</div>';
   }
 }
+/**
+ *
+ */
 class PageAbout extends AvenxPage {
+  /**
+   *
+   */
   render() {
     return '<div>About Page</div>';
   }
 }
+/**
+ *
+ */
 class PageDashboard extends AvenxPage {
+  /**
+   *
+   */
   render() {
     return '<div>Dashboard Page</div>';
   }
 }
+/**
+ *
+ */
 class PageNotFound extends AvenxPage {
+  /**
+   *
+   */
   render() {
     return '<div>404 Not Found</div>';
   }
 }
 
 let hashListeners = [];
+/**
+ *
+ */
 function setupWindowMock() {
   hashListeners = [];
   global.window = {
@@ -48,10 +75,16 @@ function setupWindowMock() {
   };
 }
 
+/**
+ *
+ */
 function teardownWindowMock() {
   delete global.window;
 }
 
+/**
+ *
+ */
 async function testRouterCoexistence() {
   console.log('🧪 Testing router coexistence and conflict prevention (non-prefix)...');
 
@@ -105,6 +138,9 @@ async function testRouterCoexistence() {
   console.log('  ✅ Non-prefixed router coexistence tests passed!');
 }
 
+/**
+ *
+ */
 async function testRouterPrefixes() {
   console.log('🧪 Testing router namespace prefixes...');
 

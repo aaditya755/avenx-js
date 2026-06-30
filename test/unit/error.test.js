@@ -1,6 +1,9 @@
 const assert = require('assert');
 const { AvenxError, AvenxErrorCodes, formatMessage } = require('../../lib/core/runtime/AvenxError');
 
+/**
+ *
+ */
 function testErrorFormatting() {
   console.log('🧪 Testing AvenxError class and formatting...');
 
@@ -19,6 +22,9 @@ function testErrorFormatting() {
   console.log('  ✅ Error formatting tests passed!');
 }
 
+/**
+ *
+ */
 function testAppErrorHandling() {
   console.log('🧪 Testing AvenxApp error throwing...');
 
@@ -84,6 +90,9 @@ function testAppErrorHandling() {
   console.log('  ✅ AvenxApp error throwing tests passed!');
 }
 
+/**
+ *
+ */
 function testCircularComputedWarning() {
   console.log('🧪 Testing circular computed warnings...');
 
@@ -107,6 +116,9 @@ function testCircularComputedWarning() {
   };
 
   global.DOMParser = class {
+    /**
+     *
+     */
     parseFromString() {
       return { body: mockElement };
     }

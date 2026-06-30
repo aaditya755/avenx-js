@@ -5,6 +5,9 @@ const { MockDOMElement, setupDOMMock, teardownDOMMock } = require('../helpers/do
 let loggedErrors = [];
 const originalConsoleError = console.error;
 
+/**
+ *
+ */
 function hookConsoleError() {
   loggedErrors = [];
   console.error = (...args) => {
@@ -12,10 +15,16 @@ function hookConsoleError() {
   };
 }
 
+/**
+ *
+ */
 function restoreConsoleError() {
   console.error = originalConsoleError;
 }
 
+/**
+ *
+ */
 async function testLifecycleErrors() {
   console.log('🧪 Testing unhandled errors in component lifecycle hooks...');
 

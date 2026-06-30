@@ -1,6 +1,9 @@
 const assert = require('assert');
 const { StateFactory } = require('../../lib/core/reactive/createState');
 
+/**
+ *
+ */
 function testComputedCachingAndInvalidation() {
   console.log('🧪 Testing computed property caching...');
 
@@ -46,6 +49,9 @@ function testComputedCachingAndInvalidation() {
   console.log('  ✅ Computed property caching tests passed!');
 }
 
+/**
+ *
+ */
 function testNestedDependencyInvalidation() {
   console.log('🧪 Testing computed dependency on nested state...');
 
@@ -89,6 +95,9 @@ function testNestedDependencyInvalidation() {
   console.log('  ✅ Nested computed dependency invalidation tests passed!');
 }
 
+/**
+ *
+ */
 function testMultiLevelComputed() {
   console.log('🧪 Testing multi-level computed properties dependency...');
 
@@ -131,6 +140,9 @@ function testMultiLevelComputed() {
   console.log('  ✅ Multi-level computed properties invalidation tests passed!');
 }
 
+/**
+ *
+ */
 function testArrayMutations() {
   console.log('🧪 Testing computed property dependency on arrays...');
 

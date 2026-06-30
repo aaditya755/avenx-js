@@ -29,6 +29,9 @@ const { AvenxPage } = require('../../lib/core/runtime/AvenxPage');
     };
 
     global.DOMParser = class {
+      /**
+       *
+       */
       parseFromString() {
         return { body: mockElement };
       }
@@ -59,7 +62,15 @@ const { AvenxPage } = require('../../lib/core/runtime/AvenxPage');
     let mountedPageName = null;
     let mountedParams = null;
 
+    /**
+     *
+     */
     class TestPage extends AvenxPage {
+      /**
+       *
+       * @param bridges
+       * @param componentRegistry
+       */
       constructor(bridges, componentRegistry) {
         super(
           {}, // initialState
@@ -75,6 +86,10 @@ const { AvenxPage } = require('../../lib/core/runtime/AvenxPage');
           componentRegistry,
         );
       }
+      /**
+       *
+       * @param target
+       */
       mount(target) {
         super.mount(target);
         mountedPageName = this.constructor.name;
@@ -90,7 +105,15 @@ const { AvenxPage } = require('../../lib/core/runtime/AvenxPage');
     let guardCalled = false;
     let redirectTarget = null;
 
+    /**
+     *
+     */
     class MockGuard extends AvenxGuard {
+      /**
+       *
+       * @param to
+       * @param from
+       */
       canActivate(to, from) {
         guardCalled = true;
         if (redirectTarget) return redirectTarget;

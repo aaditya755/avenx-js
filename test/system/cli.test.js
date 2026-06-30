@@ -6,6 +6,9 @@ const { execSync } = require('child_process');
 const TEST_DIR = path.join(__dirname, 'test-project');
 const BIN_PATH = path.join(__dirname, '../../bin/avenx.js');
 
+/**
+ *
+ */
 function setup() {
   if (fs.existsSync(TEST_DIR)) {
     fs.rmSync(TEST_DIR, { recursive: true, force: true });
@@ -13,12 +16,18 @@ function setup() {
   fs.mkdirSync(TEST_DIR);
 }
 
+/**
+ *
+ */
 function cleanup() {
   if (fs.existsSync(TEST_DIR)) {
     fs.rmSync(TEST_DIR, { recursive: true, force: true });
   }
 }
 
+/**
+ *
+ */
 function runTest() {
   console.log('🧪 Testing avenx init...');
 

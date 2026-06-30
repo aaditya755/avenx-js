@@ -4,6 +4,9 @@ const { AvenxComponent } = require('../../lib/core/runtime/AvenxComponent');
 const { MockDOMElement, setupDOMMock, teardownDOMMock } = require('../helpers/dom-mock');
 
 // Testfall unter Verwendung des zentralisierten Mocks
+/**
+ *
+ */
 async function testComponentEventLifecycle() {
   console.log('🧪 Teste Event-Bindung & Unmount mit zentralisiertem MockDOMElement...');
 

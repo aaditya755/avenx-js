@@ -10,6 +10,13 @@ try {
   }
 
   // Helper to create mock elements
+  /**
+   *
+   * @param tagName
+   * @param attributes
+   * @param children
+   * @param nodeType
+   */
   function createMockElement(tagName, attributes = {}, children = [], nodeType = 1) {
     const listeners = {};
     const element = {

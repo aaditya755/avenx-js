@@ -24,6 +24,9 @@ global.document = {
 };
 
 global.DOMParser = class {
+  /**
+   *
+   */
   parseFromString() {
     return { body: mockElement };
   }
@@ -34,6 +37,9 @@ global.Node = { ELEMENT_NODE: 1, TEXT_NODE: 3 };
 const { AvenxComponent } = require('../../lib/core/runtime/AvenxComponent');
 const { AvenxApp } = require('../../lib/core/runtime/AvenxApp');
 
+/**
+ *
+ */
 async function testStateUpdateBatching() {
   console.log('🧪 Testing component state update batching...');
 
@@ -70,6 +76,9 @@ async function testStateUpdateBatching() {
   console.log('  ✅ Component state update batching tests passed!');
 }
 
+/**
+ *
+ */
 async function testBridgeAndStateCombinedBatching() {
   console.log('🧪 Testing bridge and local state combined batching...');
 
@@ -82,7 +91,14 @@ async function testBridgeAndStateCombinedBatching() {
   let compInstance = null;
   let updateCount = 0;
 
+  /**
+   *
+   */
   class MyComp extends AvenxComponent {
+    /**
+     *
+     * @param bridges
+     */
     constructor(bridges) {
       super(
         { x: 0 }, // state

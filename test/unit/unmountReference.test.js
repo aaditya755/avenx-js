@@ -2,6 +2,9 @@ const assert = require('assert');
 const { AvenxComponent } = require('../../lib/core/runtime/AvenxComponent');
 const { MockDOMElement, setupDOMMock, teardownDOMMock } = require('../helpers/dom-mock');
 
+/**
+ *
+ */
 async function testUnmountReferenceCleanup() {
   console.log('🧪 TDD-Test: Bereinigung der __avenx_comp_instance beim Unmount...');
 

@@ -2,6 +2,9 @@ const assert = require('assert');
 const { DomPatcher } = require('../../lib/core/renderer/domPatch');
 const { MockDOMElement, setupDOMMock, teardownDOMMock } = require('../helpers/dom-mock');
 
+/**
+ *
+ */
 function testDomParserErrorHandling() {
   console.log('🧪 Testing DOMParser error handling in DomPatcher...');
 
@@ -17,6 +20,10 @@ function testDomParserErrorHandling() {
     try {
       // Mock DOMParser to simulate a parser error element
       global.DOMParser = class {
+        /**
+         *
+         * @param htmlString
+         */
         parseFromString(htmlString) {
           const body = new MockDOMElement('body');
           const parserError = new MockDOMElement('parsererror');

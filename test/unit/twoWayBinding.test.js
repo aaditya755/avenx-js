@@ -146,6 +146,10 @@ global.document = {
 };
 
 global.DOMParser = class {
+  /**
+   *
+   * @param html
+   */
   parseFromString(html) {
     const body = createMockElement('body');
 
@@ -174,6 +178,9 @@ global.DOMParser = class {
 
 global.Node = { ELEMENT_NODE: 1, TEXT_NODE: 3 };
 
+/**
+ *
+ */
 function testParserCompilation() {
   console.log('🧪 Testing ComponentParser two-way binding compilation...');
   const sp = new StyleProcessor();
@@ -197,6 +204,9 @@ function testParserCompilation() {
   console.log('  ✅ Two-way binding compilation tests passed!');
 }
 
+/**
+ *
+ */
 async function testRuntimeTwoWayBinding() {
   console.log('🧪 Testing runtime two-way binding behavior...');
 
@@ -223,6 +233,9 @@ async function testRuntimeTwoWayBinding() {
   console.log('  ✅ Runtime two-way binding behavior tests passed!');
 }
 
+/**
+ *
+ */
 async function testRuntimeNestedTwoWayBinding() {
   console.log('🧪 Testing runtime nested path two-way binding behavior...');
 
