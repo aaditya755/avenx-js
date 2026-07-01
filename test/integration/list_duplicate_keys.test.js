@@ -1,5 +1,4 @@
 const assert = require('assert');
-const { DomPatcher } = require('../../lib/core/renderer/domPatch');
 const { ListManager } = require('../../lib/core/renderer/listManager');
 
 // ==========================================
@@ -179,7 +178,6 @@ class MockElementNode extends MockNode {
 
   cloneNode(deep) {
     const copy = new MockElementNode(this.tagName, this.attrs);
-    // Copy any custom properties set on the element (e.g. disabled, checked)
     for (const key of Object.keys(this)) {
       if (!['tagName', 'nodeName', 'nodeType', 'childNodes', 'parentNode', 'attrs'].includes(key)) {
         copy[key] = this[key];
@@ -203,8 +201,11 @@ class MockElementNode extends MockNode {
             match = true;
           } else if (selector === 'template[data-ax-for]') {
             match = child.tagName === 'TEMPLATE' && child.hasAttribute('data-ax-for');
-          } else if (selector === 'parsererror') {
-            match = child.tagName === 'PARSERERROR';
+          } else if (selector.startsWith('.')) {
+            const className = selector.slice(1);
+            match = child.getAttribute('class') === className;
+          } else if (selector === '[data-ax-list-item]') {
+            match = child.hasAttribute('data-ax-list-item');
           }
           if (match) {
             results.push(child);
@@ -358,81 +359,26 @@ global.Node = {
 
 (() => {
   try {
-    console.log('🧪 Testing boolean attributes handling in DomPatcher and ListManager...');
+    console.log('🧪 Testing duplicate keys rendering in ListManager...');
 
-    const patcher = new DomPatcher();
+    const warnings = [];
+    const originalConsoleWarn = console.warn;
+    console.warn = (...args) => {
+      warnings.push(args.join(' '));
+      originalConsoleWarn.apply(console, args);
+    };
 
-    // 1. Test cleanElement
-    const tempButton = createMockElementNode('button', {
-      disabled: 'false',
-      required: 'true',
-      checked: '',
-    });
-
-    patcher.cleanElement(tempButton);
-
-    assert.strictEqual(
-      tempButton.hasAttribute('disabled'),
-      false,
-      'Falsy boolean attribute "disabled" should be removed',
-    );
-    assert.strictEqual(tempButton.disabled, false, 'Property "disabled" should be set to false');
-    assert.strictEqual(tempButton.hasAttribute('required'), true, 'Truthy boolean attribute "required" should be kept');
-    assert.strictEqual(tempButton.required, true, 'Property "required" should be set to true');
-    assert.strictEqual(tempButton.hasAttribute('checked'), true, 'Truthy boolean attribute "checked" should be kept');
-    assert.strictEqual(tempButton.checked, true, 'Property "checked" should be set to true');
-
-    // 2. Test initial patch (cloning behaviour)
-    const target = createMockElementNode('div');
-    patcher.patch(target, '<div><button disabled="false" required="true">Click</button></div>');
-
-    assert.strictEqual(target.childNodes.length, 1);
-    const container = target.childNodes[0];
-    assert.strictEqual(container.childNodes.length, 1);
-    const button = container.childNodes[0];
-
-    assert.strictEqual(
-      button.hasAttribute('disabled'),
-      false,
-      'Falsy boolean attribute "disabled" should be removed on initial clone',
-    );
-    assert.strictEqual(button.disabled, false, 'Property "disabled" should be false');
-    assert.strictEqual(
-      button.hasAttribute('required'),
-      true,
-      'Truthy boolean attribute "required" should be kept on initial clone',
-    );
-    assert.strictEqual(button.required, true, 'Property "required" should be true');
-
-    // 3. Test patch update (attributes diff/patching behaviour)
-    const nextHTML = '<div><button disabled="true" required="false">Click</button></div>';
-    patcher.patch(target, nextHTML);
-
-    assert.strictEqual(
-      button.hasAttribute('disabled'),
-      true,
-      'Truthy boolean attribute "disabled" should be added on patch update',
-    );
-    assert.strictEqual(button.disabled, true, 'Property "disabled" should be true');
-    assert.strictEqual(
-      button.hasAttribute('required'),
-      false,
-      'Falsy boolean attribute "required" should be removed on patch update',
-    );
-    assert.strictEqual(button.required, false, 'Property "required" should be false');
-
-    // 4. Test ListManager with boolean attributes
     const evaluator = {
       evaluateExpression: (expr, scope) => {
         if (expr === 'items') return scope.items;
-        if (expr === 'item.disabled') return scope.item.disabled;
+        if (expr === 'item') return scope.item;
         return null;
       },
     };
     const renderer = {
       render: (template, resolveExpression) => {
-        const disabledVal = resolveExpression('item.disabled');
-        return `<button disabled="${disabledVal}">Item</button>`;
+        const item = resolveExpression('item');
+        return `<li>${item}</li>`;
       },
     };
 
@@ -441,46 +387,58 @@ global.Node = {
     const listTemplate = createMockElementNode('template', {
       'data-ax-for': 'items',
       'data-ax-as': 'item',
+      'data-ax-key': 'item',
     });
-    listTemplate.innerHTML = '<button disabled="{%item.disabled%}">Item</button>';
+    listTemplate.innerHTML = '<li>{%item%}</li>';
     listContainer.appendChild(listTemplate);
 
-    // Initial list render
-    listManager.process(listContainer, { items: [{ disabled: false }, { disabled: true }] }, {});
+    // Initial render with duplicate items and duplicate evaluated keys
+    listManager.process(listContainer, { items: ['apple', 'apple', 'banana'] }, {});
 
-    // Scanned children should contain two buttons
-    const buttons = listContainer.childNodes.filter((node) => node.tagName === 'BUTTON');
-    assert.strictEqual(buttons.length, 2, 'Should render 2 buttons in list');
+    // Scanned children should contain three list items
+    const listItems = listContainer.childNodes.filter((node) => node.tagName === 'LI');
+    assert.strictEqual(listItems.length, 3, 'Should render all 3 items even with duplicate keys');
+    assert.strictEqual(listItems[0].textContent, 'apple');
+    assert.strictEqual(listItems[1].textContent, 'apple');
+    assert.strictEqual(listItems[2].textContent, 'banana');
 
-    assert.strictEqual(
-      buttons[0].hasAttribute('disabled'),
-      false,
-      'First list item should have "disabled" attribute removed',
-    );
-    assert.strictEqual(buttons[0].disabled, false, 'First list item property "disabled" should be false');
-    assert.strictEqual(buttons[1].hasAttribute('disabled'), true, 'Second list item should keep "disabled" attribute');
-    assert.strictEqual(buttons[1].disabled, true, 'Second list item property "disabled" should be true');
+    // Check appended index suffixes
+    assert.strictEqual(listItems[0].getAttribute('data-ax-key-val'), 'apple_0');
+    assert.strictEqual(listItems[1].getAttribute('data-ax-key-val'), 'apple_1');
+    assert.strictEqual(listItems[2].getAttribute('data-ax-key-val'), 'banana');
 
-    // Update list render
-    listManager.process(listContainer, { items: [{ disabled: true }, { disabled: false }] }, {});
+    // Check warning was emitted
+    const hasWarning = warnings.some((w) => w.includes('Duplicate key "apple" detected in list expression "items"'));
+    assert.ok(hasWarning, 'Should log a developer warning on duplicate keys');
 
-    assert.strictEqual(
-      buttons[0].hasAttribute('disabled'),
-      true,
-      'First list item should have "disabled" attribute added after update',
-    );
-    assert.strictEqual(buttons[0].disabled, true, 'First list item property "disabled" should be true after update');
-    assert.strictEqual(
-      buttons[1].hasAttribute('disabled'),
-      false,
-      'Second list item should have "disabled" attribute removed after update',
-    );
-    assert.strictEqual(buttons[1].disabled, false, 'Second list item property "disabled" should be false after update');
+    // Update state to check patching and stability
+    const firstAppleNode = listItems[0];
+    const secondAppleNode = listItems[1];
+    const bananaNode = listItems[2];
 
-    console.log('  ✅ Boolean attributes handling test passed!');
+    firstAppleNode.customState = 'first';
+    secondAppleNode.customState = 'second';
+    bananaNode.customState = 'banana-state';
+
+    // Perform an update with the same duplicates
+    listManager.process(listContainer, { items: ['apple', 'apple', 'banana'] }, {});
+
+    const listItemsUpdated = listContainer.childNodes.filter((node) => node.tagName === 'LI');
+    assert.strictEqual(listItemsUpdated.length, 3);
+    assert.strictEqual(listItemsUpdated[0], firstAppleNode, 'First apple element reference should be preserved');
+    assert.strictEqual(listItemsUpdated[1], secondAppleNode, 'Second apple element reference should be preserved');
+    assert.strictEqual(listItemsUpdated[2], bananaNode, 'Banana element reference should be preserved');
+
+    assert.strictEqual(listItemsUpdated[0].customState, 'first');
+    assert.strictEqual(listItemsUpdated[1].customState, 'second');
+
+    // Restore original console.warn
+    console.warn = originalConsoleWarn;
+
+    console.log('  ✅ Duplicate keys rendering test passed!');
     process.exit(0);
   } catch (error) {
-    console.error('❌ Boolean attributes handling test failed!');
+    console.error('❌ Duplicate keys rendering test failed!');
     console.error(error);
     process.exit(1);
   }

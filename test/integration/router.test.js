@@ -262,15 +262,18 @@ const { AvenxPage } = require('../../lib/core/runtime/AvenxPage');
     mountedPageName = null;
     mountedParams = null;
 
-    app.initRouter({
-      '#/home': 'TestPage',
-      '#/stalling': {
-        page: 'TestPage',
-        guards: [StallingGuard],
-      }
-    }, {
-      guardTimeout: 50
-    });
+    app.initRouter(
+      {
+        '#/home': 'TestPage',
+        '#/stalling': {
+          page: 'TestPage',
+          guards: [StallingGuard],
+        },
+      },
+      {
+        guardTimeout: 50,
+      },
+    );
 
     window.location.hash = '#/home';
     await new Promise((resolve) => setTimeout(resolve, 0));
@@ -304,16 +307,19 @@ const { AvenxPage } = require('../../lib/core/runtime/AvenxPage');
     mountedPageName = null;
     mountedParams = null;
 
-    app.initRouter({
-      '#/stalling-redirect': {
-        page: 'TestPage',
-        guards: [StallingGuard],
+    app.initRouter(
+      {
+        '#/stalling-redirect': {
+          page: 'TestPage',
+          guards: [StallingGuard],
+        },
+        '#/': 'TestPage',
       },
-      '#/': 'TestPage',
-    }, {
-      guardTimeout: 50,
-      guardTimeoutRedirect: '#/'
-    });
+      {
+        guardTimeout: 50,
+        guardTimeoutRedirect: '#/',
+      },
+    );
 
     let consoleErrorMsgRedirect = null;
     const originalConsoleErrorRedirect = console.error;
@@ -328,7 +334,10 @@ const { AvenxPage } = require('../../lib/core/runtime/AvenxPage');
 
     assert.strictEqual(window.location.hash, '#/', 'Hash should be redirected to target redirect path on timeout');
     assert.strictEqual(app.router.currentRoute.hash, '#/', 'Current route hash should be redirected to #/');
-    assert.ok(consoleErrorMsgRedirect && consoleErrorMsgRedirect.includes('AVX_R14'), 'Should log a timeout error on redirect');
+    assert.ok(
+      consoleErrorMsgRedirect && consoleErrorMsgRedirect.includes('AVX_R14'),
+      'Should log a timeout error on redirect',
+    );
 
     // 12. Default Guard Timeout (5000ms)
     if (app.router) {
@@ -343,7 +352,7 @@ const { AvenxPage } = require('../../lib/core/runtime/AvenxPage');
       '#/stalling-default': {
         page: 'TestPage',
         guards: [StallingGuard],
-      }
+      },
     });
 
     window.location.hash = '#/home';
@@ -384,10 +393,17 @@ const { AvenxPage } = require('../../lib/core/runtime/AvenxPage');
 
     console.error = originalConsoleError2;
 
-    assert.strictEqual(window.location.hash, prevHashBeforeDefault, 'Hash should revert to previous value on default timeout');
+    assert.strictEqual(
+      window.location.hash,
+      prevHashBeforeDefault,
+      'Hash should revert to previous value on default timeout',
+    );
     assert.strictEqual(app.router.currentRoute.hash, '#/home', 'Current route hash should revert to #/home');
     assert.strictEqual(mountedPageName, null, 'Page should not be mounted on default timeout');
-    assert.ok(consoleErrorMsg2 && consoleErrorMsg2.includes('AVX_R14'), 'Should log a default timeout error with code AVX_R14');
+    assert.ok(
+      consoleErrorMsg2 && consoleErrorMsg2.includes('AVX_R14'),
+      'Should log a default timeout error with code AVX_R14',
+    );
 
     console.log('  ✅ Router and Guards tests passed!');
   } catch (error) {
