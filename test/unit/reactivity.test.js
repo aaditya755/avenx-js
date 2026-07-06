@@ -14,6 +14,7 @@ global.document = {
 const { isReactiveTarget } = require('../../lib/core/reactive/proxyHandler');
 const { StateFactory } = require('../../lib/core/reactive/createState');
 const { AvenxApp } = require('../../lib/core/runtime/AvenxApp');
+const { AvenxWatcher } = require('../../lib/core/reactive/watcher');
 
 /**
  *
@@ -152,12 +153,6 @@ async function testBridgeDeepReactivity() {
 
   const app = new AvenxApp({ target: '#app' });
 
-  let updateAllCount = 0;
-  // Mock updateAll to count updates
-  app.updateAll = () => {
-    updateAllCount++;
-  };
-
   // Register a bridge with nested objects
   app.registerBridge('config', {
     theme: {
@@ -173,15 +168,32 @@ async function testBridgeDeepReactivity() {
 
   const bridge = app.bridges.config;
 
-  // Mutating nested property triggers app.updateAll()
-  bridge.theme.colors.primary = 'red';
-  await new Promise((resolve) => setTimeout(resolve, 0));
-  assert.strictEqual(updateAllCount, 1);
+  let colorWatcherCount = 0;
+  let themeWatcherCount = 0;
 
-  // Calling bridge method which mutates nested state triggers updateAll
+  new AvenxWatcher(
+    () => bridge.theme.colors.primary,
+    () => {
+      colorWatcherCount++;
+    }
+  );
+
+  new AvenxWatcher(
+    () => bridge.theme.dark,
+    () => {
+      themeWatcherCount++;
+    }
+  );
+
+  // Mutating nested property triggers the color watcher
+  bridge.theme.colors.primary = 'red';
+  assert.strictEqual(colorWatcherCount, 1);
+  assert.strictEqual(themeWatcherCount, 0);
+
+  // Calling bridge method which mutates nested state triggers theme watcher
   bridge.toggleTheme();
-  await new Promise((resolve) => setTimeout(resolve, 0));
-  assert.strictEqual(updateAllCount, 2);
+  assert.strictEqual(colorWatcherCount, 1);
+  assert.strictEqual(themeWatcherCount, 1);
   assert.strictEqual(bridge.theme.dark, false);
 
   console.log('  ✅ Global bridge deep reactivity tests passed!');
