@@ -64,6 +64,10 @@ Components can receive child HTML blocks using `<slot>` elements. Both default a
 </Card>
 ```
 
+#### Fallback (Default) Slot Content
+
+If a component's caller does not provide content for a given slot, Avenx-JS automatically falls back to rendering the default content defined inside that `<slot>` element in the component's template. This applies to both named and default slots. For example, in the `Card` component above, if no `slot="header"` element is passed in, the header slot will render its fallback text, `Default Header`, instead of being left empty. This makes it easy to define sensible defaults for optional component content without requiring the caller to always supply every slot.
+
 ## 5. SVG Support
 
 Avenx-JS natively supports rendering SVG elements inside templates. During template cloning and patching, the framework automatically preserves the correct SVG namespace (`http://www.w3.org/2000/svg`), ensuring that SVG graphics render correctly in the browser.
@@ -75,9 +79,7 @@ This includes nested SVG elements such as `<rect>`, `<circle>`, `<path>`, and ot
 ```html
 <svg width="200" height="200" viewBox="0 0 200 200">
   <rect x="20" y="20" width="160" height="160" rx="12" fill="#4F46E5" />
-
   <circle cx="100" cy="100" r="50" fill="#22C55E" />
-
   <path d="M50 150 L100 50 L150 150 Z" fill="#FACC15" />
 </svg>
 ```
