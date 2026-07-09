@@ -79,19 +79,16 @@ try {
   // Mock dispatcher
   let executionCount = 0;
   let executedSource = null;
-  let executedEvent = null;
   const dispatcher = {
-    execute(source, event) {
+    execute(source) {
       executionCount++;
       executedSource = source;
-      executedEvent = event;
     },
   };
 
   const resetDispatcher = () => {
     executionCount = 0;
     executedSource = null;
-    executedEvent = null;
   };
 
   const binder = new EventBinder();
