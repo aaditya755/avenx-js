@@ -80,3 +80,8 @@ export class AuthGuard extends AvenxGuard {
     return true; // Allow navigation
   }
 }
+```
+
+:::warning
+Redirect paths must start with a `#` prefix to ensure router prefix and namespace settings are respected.
+:::
