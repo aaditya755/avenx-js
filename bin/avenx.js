@@ -895,7 +895,7 @@ class AvenxCLI {
 \x1b[1;36mAvenx-JS CLI\x1b[0m
 \x1b[1mUsage:\x1b[0m \x1b[32mavenx\x1b[0m \x1b[90m<command> [type] [name]\x1b[0m
 
-Commands:
+\x1b[1;36mCommands:\x1b[0m
   init                      Initialize a new Avenx project structure
   generate component <name> Generate a new component (alias: g)
   generate page <name>      Generate a new page (alias: g p)
@@ -911,7 +911,7 @@ Commands:
   serve [port]              Start dev server with hot-reload (default: 3000)
   help                      Show this help message
 
-Options:
+\x1b[1;36mOptions:\x1b[0m
   --dry-run, -d             Preview actions without writing or deleting any files
     `);
   }
