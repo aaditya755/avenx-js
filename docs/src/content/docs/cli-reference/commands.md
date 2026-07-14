@@ -71,11 +71,27 @@ This command previews which files would be removed without actually deleting the
 
 Compiles all components, styles, pages, and bridges into `dist/bundle.js` and `dist/bundle.css`. It strips out runtime imports/exports to create a clean, single-file bundle that can be loaded in browsers directly.
 
-### 5. `avenx serve [port]`
+### 5. `avenx watch` (alias: `w`)
+
+Compiles the project once and then continues running in the background, watching the `src/` directory for changes.
+
+Whenever a file in the `src/` directory changes, Avenx automatically rebuilds the project and updates the generated files in the `dist/` directory. This keeps your compiled output up to date without manually running `avenx build` after every change.
+
+Unlike `avenx serve`, the `watch` command does not start a local development server or provide browser hot reloading. It only watches for file changes and continuously rebuilds the project in the background.
+
+**Example:**
+
+```bash
+npx avenx watch
+```
+
+Press **Ctrl + C** to stop watching.
+
+### 6. `avenx serve [port]`
 
 Starts a local hot-reloading development server (default port: 3000). It watches the `src/` directory for changes, automatically triggers a rebuild, and sends a live reload event to connected browser instances via a Server-Sent Events (SSE) bridge.
 
-### 6. `avenx check` (alias: `lint`)
+### 7. `avenx check` (alias: `lint`)
 
 Validates your project's templates without triggering a full production build.
 
