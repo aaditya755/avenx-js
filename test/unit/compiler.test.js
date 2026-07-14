@@ -96,9 +96,9 @@ try {
         "app.registerPage('Home', Home);"
       ],
       expectedNotContains: [
-        "import {",
-        "AvenxComponent",
-        "} from"
+        'import {',
+        'AvenxComponent',
+        '} from'
       ]
     },
     {
@@ -114,8 +114,8 @@ try {
         "app.registerPage('Home', Home);"
       ],
       expectedNotContains: [
-        "./global.css",
-        "theme.css"
+        './global.css',
+        'theme.css'
       ]
     },
     {
