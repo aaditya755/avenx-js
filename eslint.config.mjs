@@ -12,7 +12,9 @@ export default [
       "dev-docs/",
       "coverage/",
       "bench-results/",
-      "**/*.component.js"
+      "**/*.component.js",
+      "**/*.page.js",
+      "vite-plugin-avenx/example/"
     ]
   },
   {
