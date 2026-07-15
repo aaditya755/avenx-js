@@ -4,6 +4,8 @@ import ComponentParser from '../../lib/compiler/ComponentParser.js';
 
 /**
  * Creates an Avenx compiler instance.
+ * @param {object} [options] - Compiler configuration options.
+ * @param {boolean} [options.debug] - Enables debug logging.
  * @returns {object} Compiler API.
  */
 export function createCompiler(options = {}) {

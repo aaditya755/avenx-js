@@ -2,7 +2,6 @@ import fs from 'node:fs';
 
 /**
  * Loads and preprocesses an Avenx stylesheet.
- *
  * @param {string} filePath
  * @returns {string|null}
  */
