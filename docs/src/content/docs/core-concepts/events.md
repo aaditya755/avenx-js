@@ -70,10 +70,7 @@ To emit an event from a child component, call `$emit` inside actions or componen
 ```html
 <!-- src/components/child/child.component.js -->
 <state count="0" />
-<action name="increment">
-  state.count++;
-  $emit('change', { count: state.count });
-</action>
+<action name="increment"> state.count++; $emit('change', { count: state.count }); </action>
 
 <button @click="increment()">Click me</button>
 ```
@@ -85,9 +82,7 @@ Parent components can bind listeners to these custom events using the standard `
 ```html
 <!-- src/pages/home/home.page.js -->
 <state currentCount="0" />
-<action name="handleChildChange">
-  state.currentCount = event.detail.count;
-</action>
+<action name="handleChildChange"> state.currentCount = event.detail.count; </action>
 
 <div class="home-page">
   <p>Child count is: {{ currentCount }}</p>
