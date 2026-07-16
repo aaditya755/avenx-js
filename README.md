@@ -215,6 +215,27 @@ Use the `@` prefix to bind event listeners:
 <button @click="count++">Inline Action</button> <input @input="state.text = event.target.value" />
 ```
 
+### 6. CSS Preprocessors (Sass, SCSS, PostCSS, Less)
+
+Avenx-JS supports Sass/SCSS, PostCSS, and Less preprocessors inside `.component.css` or `.page.css` files.
+
+To enable a preprocessor, add the `style` settings to your `avenx.config.json` file:
+
+```json
+{
+  "style": {
+    "preprocessor": "scss"
+  }
+}
+```
+
+Available preprocessor options are `"sass"`, `"scss"`, `"postcss"`, and `"less"`.
+
+When a preprocessor is enabled:
+- You can write nested SCSS/Sass styles, variables, functions, and mixins directly inside your stylesheet.
+- The compiler will automatically run your styles through the preprocessor module before applying Avenx-JS scoping logic.
+- If the configured preprocessor package (e.g. `sass`) is not installed, the compiler gracefully falls back to raw CSS processing and logs a warning.
+
 ---
 
 ## 📁 Project Structure

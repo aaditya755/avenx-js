@@ -299,3 +299,32 @@ When writing nested scoped styles, remember:
 - Use `&:hover`, `&:focus`, and similar selectors to target states of the scoped parent.
 - Continue using `&` for descendant selectors nested inside `@media` and `@container` rules.
 - A nested selector without `&` is scoped by directly prepending the generated hash and does not create a descendant selector.
+
+## 6. CSS Preprocessors (Sass, SCSS, PostCSS, Less)
+
+Avenx-JS has built-in integration support for modern CSS preprocessors such as Sass, SCSS, PostCSS, and Less.
+
+### Enabling a Preprocessor
+
+To configure a preprocessor, add the `style` settings configuration block in your `avenx.config.json` configuration file:
+
+```json
+{
+  "style": {
+    "preprocessor": "scss"
+  }
+}
+```
+
+Available preprocessor options are:
+- `scss` (SCSS syntax via Dart Sass)
+- `sass` (Indented Sass syntax via Dart Sass)
+- `postcss` (PostCSS processing)
+- `less` (Less processing)
+
+### How It Works
+
+When a preprocessor is enabled:
+1. **Compilation**: The compiler automatically passes all global style inputs inside `<@global>` and scoped styling inside `<@css>` blocks through the corresponding preprocessor module.
+2. **Global Variables & Scope**: Scoped styling blocks are wrapped in a temporary parent class wrapper during preprocessing so that local variables and nesting (e.g. `& span`) resolve correctly relative to any variables or mixins defined inside `<@global>`.
+3. **Graceful Fallback**: If the configured preprocessor package (such as `sass` or `postcss`) is not installed in the workspace, the compiler will gracefully fall back to parsing the raw stylesheet as vanilla CSS and print a warning message (`AVX_W24`).
