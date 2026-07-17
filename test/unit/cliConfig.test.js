@@ -99,6 +99,15 @@ try {
     writeTestConfig({ server: { host: '' } });
     assertThrows(() => loadConfig(), 'server.host must be a non-empty string');
 
+    writeTestConfig({ voidTags: 'not-an-array' });
+    assertThrows(() => loadConfig(), 'voidTags must be an array of non-empty strings');
+
+    writeTestConfig({ voidTags: [123] });
+    assertThrows(() => loadConfig(), 'voidTags must be an array of non-empty strings');
+
+    writeTestConfig({ voidTags: [''] });
+    assertThrows(() => loadConfig(), 'voidTags must be an array of non-empty strings');
+
     cleanupTestConfig();
 
     // ----------------------------------------------------
@@ -121,7 +130,7 @@ try {
         `Unexpected warning: ${warnings[0]}`
       );
       assert.ok(
-        warnings[0].includes('Supported top-level options are: srcDir, distDir, templatesDir, server, style, outputName, logging.'),
+        warnings[0].includes('Supported top-level options are: srcDir, distDir, templatesDir, server, style, outputName, logging, voidTags.'),
         `Unexpected warning: ${warnings[0]}`
       );
       warnings.length = 0;
